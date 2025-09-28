@@ -12,7 +12,6 @@ resizeCanvas();
 const stars = [];
 const numStars = 200;
 
-// Create stars
 for (let i = 0; i < numStars; i++) {
   stars.push({
     x: Math.random() * canvas.width,
@@ -29,25 +28,21 @@ function drawStars() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   stars.forEach(star => {
-    // Update position
     star.x += star.speedX;
     star.y += star.speedY;
     star.pulse += 0.02;
 
-    // Wrap around edges
     if (star.x < 0) star.x = canvas.width;
     if (star.x > canvas.width) star.x = 0;
     if (star.y < 0) star.y = canvas.height;
     if (star.y > canvas.height) star.y = 0;
 
-    // Pulsing glow
     const glow = 0.3 + 0.7 * Math.sin(star.pulse) * star.opacity;
     ctx.beginPath();
     ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
     ctx.fillStyle = `rgba(255, 255, 255, ${glow})`;
     ctx.fill();
 
-    // Add subtle glow (blur effect simulated with shadow)
     ctx.shadowColor = 'white';
     ctx.shadowBlur = 8 * star.radius;
     ctx.fill();
