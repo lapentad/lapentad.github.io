@@ -1,140 +1,213 @@
+/* ---- Base / Reset ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* Spacing & radii */
+  --radius-lg: 20px;
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 2.5rem;
+
+  /* Colors */
+  --bg: #000;
+  --text: #fff;
+  --text-subtle: rgba(255, 255, 255, 0.9);
+  --text-muted: rgba(255, 255, 255, 0.8);
+  --glass: rgba(20, 20, 30, 0.25);
+  --border: rgba(255, 255, 255, 0.1);
+  --shadow-glow: 0 0 50px 20px rgba(0, 195, 224, 0.15);
+
+  /* Brand accents */
+  --accent-1: #b4dcff;
+  --accent-2: #64b4ff;
+
+  /* Fluid typography */
+  --fs-h1: clamp(1.6rem, 1.2rem + 2.2vw, 2.4rem);
+  --fs-h2: clamp(1.25rem, 1.05rem + 1vw, 1.6rem);
+  --fs-h3: clamp(1.1rem, 0.95rem + 0.7vw, 1.3rem);
+  --fs-body: clamp(1rem, 0.95rem + 0.4vw, 1.12rem);
+  --fs-small: clamp(0.95rem, 0.9rem + 0.2vw, 1rem);
+}
+
+html {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
-  padding: 0;
+  /* Use dynamic viewport height where supported; fall back to vh */
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  color: #fff;
-  overflow: hidden;
+  color: var(--text);
+  /* Allow vertical scrolling for small devices; avoid clipping content */
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
-  background: #000;
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Safe-area padding for notches */
+  padding:
+    env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  overscroll-behavior-y: contain;
 }
 
 #starCanvas {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   z-index: -1;
 }
 
+/* ---- Card / Container ---- */
 .container {
   text-align: center;
-  max-width: 700px;
-  padding: 2.5rem;
-  border-radius: 20px;
-  background: rgba(20, 20, 30, 0.25);
-  backdrop-filter: blur(2px);
+  width: min(100% - 2rem, 46rem);
+  /* ~736px max, with side gutters */
+  padding: clamp(1.25rem, 1rem + 2vw, var(--space-6));
+  border-radius: var(--radius-lg);
+  background: var(--glass);
+  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 0 50px 20px rgba(0, 195, 224, 0.15);
+  box-shadow: var(--shadow-glow);
   z-index: 1;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border);
+  margin: var(--space-3);
 }
 
+/* Fallback if backdrop-filter isn't supported */
+@supports not (backdrop-filter: blur(12px)) {
+  .container {
+    background: rgba(20, 20, 30, 0.65);
+  }
+}
+
+/* ---- Profile ---- */
 .profile-pic {
-  width: 150px;
-  height: 150px;
+  width: clamp(110px, 22vw, 150px);
+  height: clamp(110px, 22vw, 150px);
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 0 20px rgba(100, 180, 255, 0.4);
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-4);
 }
 
+/* ---- Headings & Text ---- */
 h1 {
-  margin-bottom: 2rem;
+  margin: 0 0 var(--space-5);
   font-weight: 600;
-  font-size: 2.2rem;
+  font-size: var(--fs-h1);
   text-shadow: 0 0 12px rgba(180, 220, 255, 0.7);
-  background: linear-gradient(135deg, #ffffff, #b4dcff);
+  background: linear-gradient(135deg, #ffffff, var(--accent-1));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-
 .about-section h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1.2rem;
-  color: #b4dcff;
+  font-size: var(--fs-h2);
+  margin: 0 0 var(--space-3);
+  color: var(--accent-1);
   text-shadow: 0 0 8px rgba(180, 220, 255, 0.5);
 }
 
-.about-text {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  color: rgba(255, 255, 255, 0.9);
+.about-section {
+  padding-inline: clamp(0rem, 1vw, 1.5rem);
 }
 
+.about-text {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  margin: 0 0 var(--space-5);
+  color: var(--text-subtle);
+}
+
+/* ---- Tech Stack ---- */
 .tech-stack {
-  margin-top: 1.5rem;
+  margin-top: var(--space-4);
 }
 
 .tech-stack h3 {
-  font-size: 1.3rem;
-  margin-bottom: 1rem;
-  color: #64b4ff;
+  font-size: var(--fs-h3);
+  margin: 0 0 var(--space-3);
+  color: var(--accent-2);
   text-shadow: 0 0 6px rgba(100, 180, 255, 0.5);
 }
 
 .tech-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
+  /* 1 → 2 → 3 columns fluidly */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-3);
 }
 
 .tech-category {
   background: rgba(255, 255, 255, 0.08);
-padding-bottom: 1rem;
-padding-left: 1rem;
+  padding: var(--space-3) var(--space-3) var(--space-4);
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border);
+  text-align: left;
 }
 
 .tech-category h4 {
-  font-size: 1rem;
-  margin-bottom: 0.8rem;
+  font-size: var(--fs-small);
+  margin: 0 0 var(--space-2);
   color: #ffffff;
   font-weight: 600;
 }
 
 .tech-category p {
-  font-size: 0.95rem;
-  line-height: 1.4;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--text-muted);
   margin: 0;
 }
 
+/* ---- Links / Buttons ---- */
 .links {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: var(--space-3);
   flex-wrap: wrap;
-  margin-top: 2rem;
+  margin-top: var(--space-5);
 }
 
 .btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 14px 24px;
-  font-size: 1rem;
+  padding: clamp(12px, 10px + 0.5vw, 14px) clamp(18px, 16px + 1vw, 24px);
+  font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1rem);
   text-decoration: none;
   color: white;
   border-radius: 12px;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   box-shadow: 0 4px 15px rgba(100, 180, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: 44px;
+  /* touch target */
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .btn:hover {
   transform: translateY(-3px);
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(255, 255, 255, 0.3),
     0 0 40px rgba(100, 180, 255, 0.4);
 }
@@ -143,62 +216,75 @@ padding-left: 1rem;
   font-size: 1.1em;
 }
 
-.linkedin { 
+.linkedin {
   background: linear-gradient(135deg, #0a66c2, #0d4a9e);
 }
 
-.github { 
+.github {
   background: linear-gradient(135deg, #181717, #404040);
 }
 
-.cv { 
+.cv {
   background: linear-gradient(135deg, #0072e6, #005bb0);
 }
 
-@media (max-width: 768px) {
-  .container { 
-    padding: 2rem; 
-    margin: 1rem;
-    max-width: 90vw;
+/* ---- Motion preferences ---- */
+@media (prefers-reduced-motion: reduce) {
+
+  .btn,
+  .btn:hover {
+    transition: none;
+    transform: none;
+    box-shadow: 0 4px 15px rgba(100, 180, 255, 0.2);
   }
-  
-  h1 {
-    font-size: 1.8rem;
-  }
-  
-  .about-section {
-    padding: 1.5rem;
-  }
-  
-  .tech-grid {
-    grid-template-columns: 1fr;
-  }
-  
+}
+
+/* ---- Pointer/touch tweaks ---- */
+@media (pointer: coarse) {
   .links {
-    gap: 1rem;
+    gap: var(--space-4);
   }
-  
-  .btn { 
-    padding: 12px 20px; 
-    font-size: 0.95rem; 
+
+  .btn:hover {
+    /* Avoid jumpiness on touch */
+    transform: none;
+  }
+}
+
+/* ---- Breakpoints ---- */
+@media (max-width: 1024px) {
+  .container {
+    width: min(100% - 2rem, 50rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--space-5);
+    margin: var(--space-3);
+    width: min(100% - 2rem, 42rem);
+  }
+
+  h1 {
+    margin-bottom: var(--space-4);
+  }
+
+  .links {
+    gap: var(--space-2);
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 1.5rem;
+    padding: var(--space-4);
+    margin: var(--space-3);
   }
-  
-  .profile-pic {
-    width: 120px;
-    height: 120px;
+
+  .about-section {
+    padding-inline: 0;
   }
-  
-  h1 {
-    font-size: 1.6rem;
-  }
-  
-  .about-text {
-    font-size: 1rem;
+
+  .tech-grid {
+    grid-template-columns: 1fr;
   }
 }
